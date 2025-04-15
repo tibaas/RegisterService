@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Mail, Phone, User, Home, ChevronLeft, ChevronRight } from "lucide-react";
 import { CalendarContainer, CalendarGrid, CalendarHeader, Container, CurrentMonth, Day, FormContainer, Input, InputGroup, InputWithIcon, Label, MonthNavigator, SubmitButton, TextArea, Title, WeekDay } from "./styles";
 import { addMonths, eachDayOfInterval, endOfMonth, format, isSameDay, startOfMonth, subMonths } from "date-fns";
+import { ptBR } from "date-fns/locale"
 
 
 export function Register() {
@@ -118,7 +119,7 @@ export function Register() {
                 <ChevronLeft size={20} />
               </MonthNavigator>
               <CurrentMonth>
-                {format(currentDate, 'MMMM yyyy')}
+                {format(currentDate, 'MMMM yyyy', {locale: ptBR})}
               </CurrentMonth>
               <MonthNavigator onClick={() => setCurrentDate(addMonths(currentDate, 1))}>
                 <ChevronRight size={20} />
@@ -139,7 +140,7 @@ export function Register() {
                   onClick={() => !isDateBooked(day) && handleDateSelect(day)}
                   disabled={isDateBooked(day)}
                 >
-                  {format(day, 'd')}
+                  {format(day, 'd', {locale: ptBR})}
                 </Day>
               ))}
             </CalendarGrid>
