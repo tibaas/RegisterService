@@ -155,7 +155,7 @@ export const Register: React.FC = () => {
         </InputGroup> */}
 
         <InputGroup>
-          <Label htmlFor="phone">Phone Number</Label>
+          <Label htmlFor="phone">Telefone para contato</Label>
           <InputWithIcon>
             <Phone size={20} />
             <Input
@@ -170,7 +170,7 @@ export const Register: React.FC = () => {
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="address">Address</Label>
+          <Label htmlFor="address">Endereço</Label>
           <InputWithIcon>
             <Home size={20} />
             <Input
