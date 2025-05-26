@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { Container, Content, Description, IconContainer, RegisterButton, Title } from "./styles"
-import { Wind, Thermometer } from "lucide-react"
+import { Wind, CalendarArrowUp, Snowflake } from "lucide-react"
+
 
 export function Home() {
   const navigate = useNavigate()
@@ -9,17 +10,16 @@ export function Home() {
     <Container>
       <Content>
         <IconContainer>
+          <Snowflake size={48} />
           <Wind size={48} />
-          <Thermometer size={48} />
         </IconContainer>
-        <Title>Professional Air Conditioning Services</Title>
+        <Title>Serviço Profissional em Climatizações</Title>
         <Description>
-          Expert installation, maintenance, and repair services for your comfort.
-          Schedule your service today with our easy-to-use booking system.
+          Manutenção, limpeza, instalação e serviços em geral, atendemos em Ouricuri e região.
         </Description>
         <RegisterButton onClick={() => navigate('/register')}>
-          Schedule Service
-          <Wind size={20} />
+          Agendar Serviço
+          <CalendarArrowUp size={20} />
         </RegisterButton>
       </Content>
     </Container>

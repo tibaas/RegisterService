@@ -17,12 +17,17 @@ export const Content = styled.div`
   padding: 3rem;
   border-radius: 20px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 export const Title = styled.h1`
   font-size: 2.5rem;
   color: ${({ theme }) => theme.colors.text};
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const Description = styled.p`
