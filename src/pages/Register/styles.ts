@@ -219,6 +219,22 @@ export const TimeSlotLabel = styled.div`
   margin-bottom: 0.5rem;
 `;
 
+
+export const ServiceSelect = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  padding-left: 2.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
 export const SubmitButton = styled.button`
   width: 100%;
   background: ${({ theme }) => theme.colors.primary};

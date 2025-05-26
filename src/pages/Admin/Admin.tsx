@@ -32,20 +32,6 @@ export const Admin: React.FC = () => {
     fetchBookings();
   }, []);
 
-  // const checkIfAdmin = async () => {
-  //   const {
-  //     data: {user},
-  //     error,
-  //   } = await supabase.auth.getUser()
-
-  //   if (error) {
-  //     console.error('Error getting user:', error)
-  //     return
-  //   }
-  //   if (user?.email === 'tibaz420@gmail.com') {
-  //     setIsAdmin(true)
-  //   }
-  // }
 
   const fetchBookings = async () => {
     setIsLoading(true);
@@ -141,9 +127,9 @@ export const Admin: React.FC = () => {
             </BookingDate>
             
             <StatusBadge status={booking.status}>
-              {booking.status === 'completed' ? (
+              {booking.status === 'completada' ? (
                 <CheckCircle size={16} />
-              ) : booking.status === 'cancelled' ? (
+              ) : booking.status === 'cancelada' ? (
                 <XCircle size={16} />
               ) : (
                 <Clock size={16} />
@@ -156,10 +142,10 @@ export const Admin: React.FC = () => {
                 <User size={18} />
                 {booking.name}
               </InfoItem>
-              <InfoItem>
+              {/* <InfoItem>
                 <Mail size={18} />
                 {booking.email}
-              </InfoItem>
+              </InfoItem> */}
               <InfoItem>
                 <Phone size={18} />
                 {booking.phone}
@@ -180,19 +166,19 @@ export const Admin: React.FC = () => {
                 <>
                   <Button
                     variant="success"
-                    onClick={() => updateBookingStatus(booking.id, 'completed')}
+                    onClick={() => updateBookingStatus(booking.id, 'completada')}
                     disabled={isLoading}
                   >
                     <CheckCircle size={16} />
-                    Complete
+                    Completar
                   </Button>
                   <Button
                     variant="error"
-                    onClick={() => updateBookingStatus(booking.id, 'cancelled')}
+                    onClick={() => updateBookingStatus(booking.id, 'cancelada')}
                     disabled={isLoading}
                   >
                     <XCircle size={16} />
-                    Cancel
+                    Cancelar
                   </Button>
                 </>
               )}
