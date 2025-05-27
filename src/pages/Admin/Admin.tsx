@@ -19,19 +19,220 @@ interface Booking {
   created_at: string;
 }
 
-export const Admin: React.FC = () => {
+// export const Admin: React.FC = () => {
 
+//   const [bookings, setBookings] = useState<Booking[]>([]);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [isLoading, setIsLoading] = useState(false);
+//   // const [isAdmin, setIsAdmin] = useState(false)
+//   const bookingsPerPage = 10;
+
+//   useEffect(() => {
+//     // checkIfAdmin();
+//     fetchBookings();
+//   }, []);
+
+
+//   const fetchBookings = async () => {
+//     setIsLoading(true);
+//     try {
+//       const { data, error } = await supabase
+//         .from('bookings')
+//         .select('*')
+//         .order('service_date', { ascending: true })
+//         .order('booking_time', { ascending: true });
+
+//       if (error) throw error;
+//       setBookings(data || []);
+//     } catch (error) {
+//       console.error('Error fetching bookings:', error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   const updateBookingStatus = async (id: string, status: string) => {
+//     try {
+//       setIsLoading(true);
+//       const { error } = await supabase
+//         .from('bookings')
+//         .update({ status })
+//         .eq('id', id);
+
+//       if (error) throw error;
+      
+//       // Update local state
+//       setBookings(prevBookings => 
+//         prevBookings.map(booking => 
+//           booking.id === id ? { ...booking, status } : booking
+//         )
+//       );
+//     } catch (error) {
+//       console.error('Error updating booking:', error);
+//       alert('Failed to update booking status. Please try again.');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   const deleteBooking = async (id: string) => {
+//     if (!window.confirm('Are you sure you want to permanently delete this booking? This action cannot be undone.')) {
+//       return;
+//     }
+
+//     try {
+//       setIsLoading(true);
+//       const { error } = await supabase
+//         .from('bookings')
+//         .delete()
+//         .eq('id', id);
+
+//       if (error) throw error;
+      
+//       // Update local state
+//       setBookings(prevBookings => prevBookings.filter(booking => booking.id !== id));
+//     } catch (error) {
+//       console.error('Error deleting booking:', error);
+//       alert('Failed to delete booking. Please try again.');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   // Pagination logic
+//   const indexOfLastBooking = currentPage * bookingsPerPage;
+//   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
+//   const currentBookings = bookings.slice(indexOfFirstBooking, indexOfLastBooking);
+//   const totalPages = Math.ceil(bookings.length / bookingsPerPage);
+
+//   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+//   return (
+//     <Container>
+//       <Header>
+//         <Title>Agendamentos</Title>
+//       </Header>
+      
+//       <BookingGrid>
+//         {currentBookings.map((booking) => (
+//           <BookingCard key={booking.id}>
+//             <BookingDate>
+//               <Calendar size={20} />
+//               {format(parseISO(booking.service_date), "d 'de' MMMM yyyy", {
+//                 locale: ptBR,
+//               })}
+//               {/* {(booking.service_date)} */}
+//               <Clock size={16} style={{ marginLeft: '8px' }} />
+//               {booking.booking_time}
+//             </BookingDate>
+            
+//             <StatusBadge status={booking.status}>
+//               {booking.status === 'completada' ? (
+//                 <CheckCircle size={16} color='green' />
+//               ) : booking.status === 'cancelada' ? (
+//                 <XCircle size={16} color='red' />
+//               ) : (
+//                 <Clock size={16} />
+//               )}
+//               {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+//             </StatusBadge>
+
+//             <BookingInfo>
+//               <InfoItem>
+//                 <User size={18} />
+//                 {booking.name}
+//               </InfoItem>
+//               {/* <InfoItem>
+//                 <Mail size={18} />
+//                 {booking.email}
+//               </InfoItem> */}
+//               <InfoItem>
+//                 <Phone size={18} />
+//                 {booking.phone}
+//               </InfoItem>
+//               <InfoItem>
+//                 <MapPin size={18} />
+//                 {booking.address}
+//               </InfoItem>
+//             </BookingInfo>
+
+//             <Description>
+//               <MessageSquare size={18} />
+//               {booking.description}
+//             </Description>
+
+//             <ActionButtons>
+//               {booking.status === 'pending' && (
+//                 <>
+//                   <Button
+//                     variant="success"
+//                     onClick={() => updateBookingStatus(booking.id, 'completada')}
+//                     disabled={isLoading}
+//                   >
+//                     <CheckCircle size={16} />
+//                     Completar
+//                   </Button>
+//                   <Button
+//                     variant="error"
+//                     onClick={() => updateBookingStatus(booking.id, 'cancelada')}
+//                     disabled={isLoading}
+//                   >
+//                     <XCircle size={16} />
+//                     Cancelar
+//                   </Button>
+//                 </>
+//               )}
+//               <Button
+//                 variant="delete"
+//                 onClick={() => deleteBooking(booking.id)}
+//                 disabled={isLoading}
+//               >
+//                 <Trash2 size={16} />
+//               </Button>
+//             </ActionButtons>
+//           </BookingCard>
+//         ))}
+//       </BookingGrid>
+
+//       <Pagination>
+//         <PageButton
+//           onClick={() => paginate(currentPage - 1)}
+//           disabled={currentPage === 1 || isLoading}
+//         >
+//           Previous
+//         </PageButton>
+//         {Array.from({ length: totalPages }, (_, i) => (
+//           <PageButton
+//             key={i + 1}
+//             onClick={() => paginate(i + 1)}
+//             active={currentPage === i + 1}
+//             disabled={isLoading}
+//           >
+//             {i + 1}
+//           </PageButton>
+//         ))}
+//         <PageButton
+//           onClick={() => paginate(currentPage + 1)}
+//           disabled={currentPage === totalPages || isLoading}
+//         >
+//           Next
+//         </PageButton>
+//       </Pagination>
+//     </Container>
+//   );
+// };
+
+
+
+export const Admin: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  // const [isAdmin, setIsAdmin] = useState(false)
   const bookingsPerPage = 10;
 
   useEffect(() => {
-    // checkIfAdmin();
     fetchBookings();
   }, []);
-
 
   const fetchBookings = async () => {
     setIsLoading(true);
@@ -61,7 +262,6 @@ export const Admin: React.FC = () => {
 
       if (error) throw error;
       
-      // Update local state
       setBookings(prevBookings => 
         prevBookings.map(booking => 
           booking.id === id ? { ...booking, status } : booking
@@ -69,14 +269,14 @@ export const Admin: React.FC = () => {
       );
     } catch (error) {
       console.error('Error updating booking:', error);
-      alert('Failed to update booking status. Please try again.');
+      alert('Falha ao atualizar o status. Por favor, tente novamente.');
     } finally {
       setIsLoading(false);
     }
   };
 
   const deleteBooking = async (id: string) => {
-    if (!window.confirm('Are you sure you want to permanently delete this booking? This action cannot be undone.')) {
+    if (!window.confirm('Tem certeza que deseja excluir este agendamento? Esta ação não pode ser desfeita.')) {
       return;
     }
 
@@ -89,17 +289,15 @@ export const Admin: React.FC = () => {
 
       if (error) throw error;
       
-      // Update local state
       setBookings(prevBookings => prevBookings.filter(booking => booking.id !== id));
     } catch (error) {
       console.error('Error deleting booking:', error);
-      alert('Failed to delete booking. Please try again.');
+      alert('Falha ao excluir o agendamento. Por favor, tente novamente.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Pagination logic
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
   const currentBookings = bookings.slice(indexOfFirstBooking, indexOfLastBooking);
@@ -107,10 +305,21 @@ export const Admin: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  const getStatusDisplay = (status: string) => {
+    switch (status) {
+      case 'completado':
+        return 'Completado';
+      case 'cancelado':
+        return 'Cancelado';
+      default:
+        return 'Pendente';
+    }
+  };
+
   return (
     <Container>
       <Header>
-        <Title>Agendamentos</Title>
+        <Title>Agendamentos de Serviço</Title>
       </Header>
       
       <BookingGrid>
@@ -118,23 +327,20 @@ export const Admin: React.FC = () => {
           <BookingCard key={booking.id}>
             <BookingDate>
               <Calendar size={20} />
-              {format(parseISO(booking.service_date), "d 'de' MMMM yyyy", {
-                locale: ptBR,
-              })}
-              {/* {(booking.service_date)} */}
+              {format(new Date(booking.service_date), 'dd/MM/yyyy')}
               <Clock size={16} style={{ marginLeft: '8px' }} />
               {booking.booking_time}
             </BookingDate>
             
             <StatusBadge status={booking.status}>
-              {booking.status === 'completada' ? (
-                <CheckCircle size={16} color='green' />
-              ) : booking.status === 'cancelada' ? (
-                <XCircle size={16} color='red' />
+              {booking.status === 'completado' ? (
+                <CheckCircle size={16} />
+              ) : booking.status === 'cancelado' ? (
+                <XCircle size={16} />
               ) : (
                 <Clock size={16} />
               )}
-              {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+              {getStatusDisplay(booking.status)}
             </StatusBadge>
 
             <BookingInfo>
@@ -162,11 +368,11 @@ export const Admin: React.FC = () => {
             </Description>
 
             <ActionButtons>
-              {booking.status === 'pending' && (
+              {booking.status !== 'completado' && booking.status !== 'cancelado' && (
                 <>
                   <Button
                     variant="success"
-                    onClick={() => updateBookingStatus(booking.id, 'completada')}
+                    onClick={() => updateBookingStatus(booking.id, 'completado')}
                     disabled={isLoading}
                   >
                     <CheckCircle size={16} />
@@ -174,7 +380,7 @@ export const Admin: React.FC = () => {
                   </Button>
                   <Button
                     variant="error"
-                    onClick={() => updateBookingStatus(booking.id, 'cancelada')}
+                    onClick={() => updateBookingStatus(booking.id, 'cancelado')}
                     disabled={isLoading}
                   >
                     <XCircle size={16} />
@@ -188,6 +394,7 @@ export const Admin: React.FC = () => {
                 disabled={isLoading}
               >
                 <Trash2 size={16} />
+                Excluir
               </Button>
             </ActionButtons>
           </BookingCard>
@@ -199,7 +406,7 @@ export const Admin: React.FC = () => {
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1 || isLoading}
         >
-          Previous
+          Anterior
         </PageButton>
         {Array.from({ length: totalPages }, (_, i) => (
           <PageButton
@@ -215,7 +422,7 @@ export const Admin: React.FC = () => {
           onClick={() => paginate(currentPage + 1)}
           disabled={currentPage === totalPages || isLoading}
         >
-          Next
+          Próximo
         </PageButton>
       </Pagination>
     </Container>

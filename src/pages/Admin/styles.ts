@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+
+
 // export const Container = styled.div`
 //   padding: 2rem;
 //   max-width: 1200px;
@@ -173,7 +175,6 @@ import styled from "styled-components";
 
 
 
-
 export const Container = styled.div`
   padding: 2rem;
   max-width: 1200px;
@@ -228,12 +229,12 @@ export const StatusBadge = styled.div<StatusBadgeProps>`
   
   ${({ status, theme }) => {
     switch (status) {
-      case 'completed':
+      case 'completado':
         return `
           background-color: ${theme.colors.success}15;
           color: ${theme.colors.success};
         `;
-      case 'cancelled':
+      case 'cancelado':
         return `
           background-color: ${theme.colors.error}15;
           color: ${theme.colors.error};
@@ -283,6 +284,9 @@ export const Description = styled.div`
 export const ActionButtons = styled.div`
   display: flex;
   gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
 `;
 
 interface ButtonProps {
@@ -294,6 +298,7 @@ export const Button = styled.button<ButtonProps>`
   flex: 1;
   padding: 0.5rem;
   border: none;
+  white-space: nowrap;
   border-radius: 8px;
   font-weight: 500;
   display: flex;
