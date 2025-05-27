@@ -110,7 +110,7 @@ export const Admin: React.FC = () => {
   return (
     <Container>
       <Header>
-        <Title>Service Bookings</Title>
+        <Title>Agendamentos</Title>
       </Header>
       
       <BookingGrid>
@@ -128,9 +128,9 @@ export const Admin: React.FC = () => {
             
             <StatusBadge status={booking.status}>
               {booking.status === 'completada' ? (
-                <CheckCircle size={16} />
+                <CheckCircle size={16} color='green' />
               ) : booking.status === 'cancelada' ? (
-                <XCircle size={16} />
+                <XCircle size={16} color='red' />
               ) : (
                 <Clock size={16} />
               )}

@@ -156,9 +156,9 @@ export  function Register() {
               required
             >
               <option value="">Selecione um serviço</option>
-              <option value="Installation">Instalação</option>
-              <option value="Maintenance">Manutenção</option>
-              <option value="Cleaning">Limpeza</option>
+              <option value="Instalação">Instalação</option>
+              <option value="Manutenção">Manutenção</option>
+              <option value="Limpeza">Limpeza</option>
             </ServiceSelect>
           </InputWithIcon>
         </InputGroup>
