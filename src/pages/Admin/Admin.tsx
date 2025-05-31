@@ -252,28 +252,64 @@ export const Admin: React.FC = () => {
     }
   };
 
-  const updateBookingStatus = async (id: string, status: string) => {
-    try {
-      setIsLoading(true);
-      const { error } = await supabase
-        .from('bookings')
-        .update({ status })
-        .eq('id', id);
 
-      if (error) throw error;
-      
+
+
+  const updateBookingStatus = async (id: string, status: string) => {
+  try {
+    setIsLoading(true);
+
+    const { data, error } = await supabase
+      .from('bookings')
+      .update({ status })
+      .eq('id', id)
+      .select(); // força retorno dos dados atualizados
+
+    if (error) throw error;
+
+    if (data && data.length > 0) {
+      // Atualiza com dados reais do supabase
       setBookings(prevBookings => 
         prevBookings.map(booking => 
-          booking.id === id ? { ...booking, status } : booking
+          booking.id === id ? data[0] : booking
         )
       );
-    } catch (error) {
-      console.error('Error updating booking:', error);
-      alert('Falha ao atualizar o status. Por favor, tente novamente.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      console.warn('Nenhum dado foi retornado após o update');
+      // Como fallback, refetch tudo
+      await fetchBookings();
     }
-  };
+  } catch (error) {
+    console.error('Error updating booking:', error);
+    alert('Falha ao atualizar o status. Por favor, tente novamente.');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+  // const updateBookingStatus = async (id: string, status: string) => {
+  //   try {
+  //     setIsLoading(true);
+  //     const { error } = await supabase
+  //       .from('bookings')
+  //       .update({ status })
+  //       .eq('id', id);
+        
+
+  //     if (error) throw error;
+      
+  //     setBookings(prevBookings => 
+  //       prevBookings.map(booking => 
+  //         booking.id === id ? { ...booking, status } : booking
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error('Error updating booking:', error);
+  //     alert('Falha ao atualizar o status. Por favor, tente novamente.');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const deleteBooking = async (id: string) => {
     if (!window.confirm('Tem certeza que deseja excluir este agendamento? Esta ação não pode ser desfeita.')) {
@@ -319,7 +355,7 @@ export const Admin: React.FC = () => {
   return (
     <Container>
       <Header>
-        <Title>Agendamentos de Serviço</Title>
+        <Title>Agendamentos de Serviços</Title>
       </Header>
       
       <BookingGrid>
@@ -428,3 +464,6 @@ export const Admin: React.FC = () => {
     </Container>
   );
 };
+
+
+
