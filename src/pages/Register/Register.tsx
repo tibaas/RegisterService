@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Mail, Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench } from "lucide-react";
+import { Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench } from "lucide-react";
 import { CalendarContainer, CalendarGrid, CalendarHeader, Container, CurrentMonth, Day, ErrorMessage, FormContainer, Input, InputGroup, InputWithIcon, Label, MonthNavigator, ServiceSelect, SubmitButton, SuccessMessage, TextArea, TimeSelect, TimeSlotLabel, Title, WeekDay } from "./styles";
 import { addMonths, eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 import { ptBR } from 'date-fns/locale';
