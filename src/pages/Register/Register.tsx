@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench } from "lucide-react";
-import { CalendarContainer, CalendarGrid, CalendarHeader, Container, CurrentMonth, Day, ErrorMessage, FormContainer, Input, InputGroup, InputWithIcon, Label, MonthNavigator, ServiceSelect, SubmitButton, SuccessMessage, TextArea, TimeSelect, TimeSlotLabel, Title, WeekDay } from "./styles";
+import { Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench, CheckCircle, XCircle } from "lucide-react";
+import { CalendarContainer, CalendarGrid, CalendarHeader, Container, CurrentMonth, Day, FormContainer, Input, InputGroup, InputWithIcon, Label, MonthNavigator, ServiceSelect, SubmitButton, TextArea, TimeSelect, TimeSlotLabel, Title, WeekDay, ModalOverlay, ModalContent, ModalIcon, ModalMessage, ModalCloseButton } from "./styles";
 import { addMonths, eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from "react-router-dom";
@@ -21,9 +21,8 @@ export  function Register() {
    const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modalState, setModalState] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: 'service@example.com',
@@ -36,8 +35,7 @@ export  function Register() {
   });
 
   const timeSlots = [
-    '09:00', '10:00', '11:00', '12:00', '13:00', 
-    '14:00', '15:00', '16:00', '17:00'
+    '09:00', '11:00', '15:00','17:00',
   ];
 
   useEffect(() => {
@@ -65,9 +63,8 @@ export  function Register() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
     setIsSubmitting(true);
+    setModalState(null);
 
     try {
       const { error } = await supabase
@@ -87,12 +84,12 @@ export  function Register() {
 
       if (error) throw error;
 
-      setSuccess('Agendamento realizado com sucesso! Redirecionando...');
+      setModalState({ type: 'success', message: 'Agendamento realizado com sucesso! Redirecionando...' });
       setTimeout(() => {
         navigate('/');
       }, 2000);
     } catch (error: any) {
-      setError(error.message || 'Falha ao agendar serviço. Por favor, tente novamente.');
+      setModalState({ type: 'error', message: 'Existe um serviço agendado nesse horário. Por favor, selecione outro horário ou dia e tente novamente.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -106,6 +103,10 @@ export  function Register() {
   const handleDateSelect = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
     setFormData(prev => ({ ...prev, date: formattedDate, time: '' }));
+  };
+
+  const handleCloseModal = () => {
+    setModalState(null);
   };
 
   const getBookingsForDate = (date: string) => {
@@ -278,9 +279,20 @@ export  function Register() {
           {isSubmitting ? 'Agendando...' : 'Agendar Serviço'}
         </SubmitButton>
 
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        {success && <SuccessMessage>{success}</SuccessMessage>}
       </FormContainer>
+      {modalState && (
+        <ModalOverlay onClick={handleCloseModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalIcon type={modalState.type}>
+              {modalState.type === 'success' ? <CheckCircle size={48} /> : <XCircle size={48} />}
+            </ModalIcon>
+            <ModalMessage>{modalState.message}</ModalMessage>
+            <ModalCloseButton onClick={handleCloseModal}>
+              Fechar
+            </ModalCloseButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </Container>
   );
 }

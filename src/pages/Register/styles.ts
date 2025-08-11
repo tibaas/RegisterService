@@ -273,3 +273,56 @@ export const SuccessMessage = styled.div`
   margin-top: 1rem;
   font-size: 0.875rem;
 `;
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+export const ModalContent = styled.div`
+  background: ${({ theme }) => theme.colors.white};
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: ${({ theme }) => theme.shadows.lg};
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const ModalIcon = styled.div<{ type: 'success' | 'error' }>`
+  color: ${({ type, theme }) => type === 'success' ? theme.colors.success : theme.colors.error};
+`;
+
+export const ModalMessage = styled.p`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 1rem;
+`;
+
+export const ModalCloseButton = styled.button`
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.secondary};
+  }
+`;
