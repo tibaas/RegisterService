@@ -125,7 +125,7 @@ export const Admin: React.FC = () => {
   return (
     <Container>
       <Header>
-        <Title>Agendamentos de Serviços</Title>
+        <Title>Agendamentos</Title>
       </Header>
       
       <BookingGrid>

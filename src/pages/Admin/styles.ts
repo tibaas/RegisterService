@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   padding: 2rem;
-  max-width: 1200px;
+  //to try to fit the screen in desktop mode was 1200px before
+  max-width: 100vw;
   margin: 0 auto;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.secondary} 100%);
 `;
@@ -13,7 +14,7 @@ export const Header = styled.div`
 
 export const Title = styled.h1`
   font-size: 2rem;
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 export const BookingGrid = styled.div`
@@ -29,6 +30,7 @@ export const BookingCard = styled.div`
   padding: 1.5rem;
   box-shadow: ${({ theme }) => theme.shadows.md};
   
+  
 `;
 
 export const BookingDate = styled.div`
@@ -36,7 +38,6 @@ export const BookingDate = styled.div`
   align-items: center;
   gap: 0.5rem;
   color: ${({ theme }) => theme.colors.text};
-  font-weight: 500;
   margin-bottom: 1rem;
 `;
 
