@@ -6,7 +6,7 @@ O app permite que usuários registrem serviços e que o administrador visualize 
 
 ## 🚀 Funcionalidades
 
-🔑 Login seguro com Google (via Supabase Auth)
+### 🔑 Login seguro com Google (via Supabase Auth)
 
 ### 📝 Cadastro de serviços com formulário simples
 
@@ -25,17 +25,6 @@ O app permite que usuários registrem serviços e que o administrador visualize 
 
 ### 🎨 Estilização feita com styled-components e focada em mobile.
 
-### 🌐 Rotas:
-
-/ → *Página inicial*
-
-/register → *Formulário de registro de serviço*
-
-/login → *Rota por onde o administrador efetua login com uma conta google*
-
-/admin → *Painel administrativo* 
-
-
 # 🛠️ Tecnologias utilizadas
 
 ### ⚛️ React
@@ -45,3 +34,43 @@ O app permite que usuários registrem serviços e que o administrador visualize 
 ### 🛡️ Supabase (Auth + Database)
 
 ### 💅 Styled-components
+
+
+# 📦 Como rodar o projeto
+### 1. Clone este repositório:
+```bash
+git clone https://github.com/tibaas/registerservice.git
+```
+### 2. Acesse a pasta do projeto:
+
+```bash
+cd registerservice
+```
+### 3. Instale as dependências:
+```bash
+npm install
+# ou
+yarn install
+```
+
+### 4. Crie um arquivo .env na pasta raiz do projeto e adicione suas credênciais do supabase: 
+```bash
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+```
+
+
+
+### 5. Rode o projeto:
+
+```bash
+npm run dev
+# ou
+yarn dev
+
+```
+
+ 
+
+ 
+
