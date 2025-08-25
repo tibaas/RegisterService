@@ -25,7 +25,7 @@ O app permite que usuários registrem serviços e que o administrador visualize 
 
 ### 🎨 Estilização feita com styled-components e focada em mobile.
 
-# 🛠️ Tecnologias utilizadas
+## 🛠️ Tecnologias utilizadas
 
 ### ⚛️ React
 
