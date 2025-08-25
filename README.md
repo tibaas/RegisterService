@@ -19,7 +19,7 @@ O app permite que usuários registrem serviços e que o administrador visualize 
 ### 📊 Painel administrativo para visualizar registros
 
 - Status de cada serviço: **Pendente**, **Completo** ou **Cancelado**
-- Botões que alteram o status de acordo com a escolha do admistrador
+- Botões que alteram o status de acordo com a escolha do administrador
   
 ![bgcardone](https://github.com/user-attachments/assets/1f6d9100-44fc-41e5-adf9-8eb6969530fd)
 
