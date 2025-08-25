@@ -29,9 +29,9 @@ O app permite que usuários registrem serviços e que o administrador visualize 
 
 / → *Página inicial*
 
-/login → *Rota por onde o administrador efetua login com uma conta google*
-
 /register → *Formulário de registro de serviço*
+
+/login → *Rota por onde o administrador efetua login com uma conta google*
 
 /admin → *Painel administrativo* 
 
