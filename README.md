@@ -20,40 +20,42 @@ O app permite que usuários registrem serviços e que o administrador visualize 
 
 - Status de cada serviço: **Pendente**, **Completo** ou **Cancelado**
 - Botões que alteram o status de acordo com a escolha do administrador
+
+### 🎨 Estilização feita com styled-components e focada em mobile.
   
 ![bgcardone](https://github.com/user-attachments/assets/1f6d9100-44fc-41e5-adf9-8eb6969530fd)
 
-### 🎨 Estilização feita com styled-components e focada em mobile.
+
 
 ## 🛠️ Tecnologias utilizadas
 
-### ⚛️ React
+ **⚛️ React**
 
-### 🔷 TypeScript
+**🔷 TypeScript**
 
-### 🛡️ Supabase (Auth + Database)
+**🛡️ Supabase (Auth + Database)**
 
-### 💅 Styled-components
+ **💅 Styled-components**
 
 
-# 📦 Como rodar o projeto
-### 1. Clone este repositório:
+## 📦 Como rodar o projeto
+**1. Clone este repositório:**
 ```bash
 git clone https://github.com/tibaas/registerservice.git
 ```
-### 2. Acesse a pasta do projeto:
+**2. Acesse a pasta do projeto:**
 
 ```bash
 cd registerservice
 ```
-### 3. Instale as dependências:
+**3. Instale as dependências:**
 ```bash
 npm install
 # ou
 yarn install
 ```
 
-### 4. Crie um arquivo .env na pasta raiz do projeto e adicione suas credênciais do supabase: 
+**4. Crie um arquivo .env na pasta raiz do projeto e adicione suas credênciais do supabase:**
 ```bash
 VITE_SUPABASE_URL=...
 VITE_SUPABASE_ANON_KEY=...
@@ -61,7 +63,7 @@ VITE_SUPABASE_ANON_KEY=...
 
 
 
-### 5. Rode o projeto:
+**5. Rode o projeto:**
 
 ```bash
 npm run dev
