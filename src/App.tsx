@@ -12,15 +12,6 @@ import { Admin } from './pages/Admin/Admin';
 export function App() {
 
   return (
-  //   <ThemeProvider theme={defaultTheme}>
-  //     <GlobalStyle />
-  //     <Router>
-  //       <Routes>
-  //         <Route path="/" element={<Home />} />
-  //         <Route path="/register" element={<Register />} />
-  //       </Routes>
-  //     </Router>
-  //  </ThemeProvider>
       <ThemeProvider theme={defaultTheme}>
       <GlobalStyle />
       <Router>
