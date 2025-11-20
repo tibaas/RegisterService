@@ -29,7 +29,9 @@ export const BookingCard = styled.div`
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: ${({ theme }) => theme.shadows.md};
-  
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   
 `;
 
@@ -109,6 +111,11 @@ export const Description = styled.div`
   }
 `;
 
+export const AudioPlayerWrapper = styled.div`
+  audio {
+    width: 100%;
+  }
+`;
 export const ActionButtons = styled.div`
   display: flex;
   gap: 0.5rem;

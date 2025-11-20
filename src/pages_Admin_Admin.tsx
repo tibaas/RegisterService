@@ -23,6 +23,7 @@ export const Admin: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [audioUrls, setAudioUrls] = useState<Record<string, string>>({});
   const bookingsPerPage = 10;
 
   useEffect(() => {
@@ -39,7 +40,9 @@ export const Admin: React.FC = () => {
         .order('booking_time', { ascending: true });
 
       if (error) throw error;
-      setBookings(data || []);
+      const fetchedBookings = data || [];
+      setBookings(fetchedBookings);
+      generateSignedUrls(fetchedBookings);
     } catch (error) {
       console.error('Error fetching bookings:', error);
     } finally {
@@ -47,6 +50,24 @@ export const Admin: React.FC = () => {
     }
   };
 
+  const generateSignedUrls = async (bookingsToProcess: Booking[]) => {
+    const urls: Record<string, string> = {};
+    for (const booking of bookingsToProcess) {
+      if (booking.audio_url) {
+        const path = new URL(booking.audio_url).pathname.split('/booking-audios/')[1];
+        if (path) {
+          const { data, error } = await supabase.storage
+            .from('booking-audios')
+            .createSignedUrl(path, 60 * 60); // URL válida por 1 hora
+
+          if (data) {
+            urls[booking.id] = data.signedUrl;
+          }
+        }
+      }
+    }
+    setAudioUrls(prev => ({ ...prev, ...urls }));
+  };
 
 
 
@@ -176,7 +197,7 @@ export const Admin: React.FC = () => {
             
             {booking.audio_url && (
               <AudioPlayerWrapper>
-                <audio controls src={booking.audio_url} />
+                {audioUrls[booking.id] && <audio controls src={audioUrls[booking.id]} />}
               </AudioPlayerWrapper>
             )}
 

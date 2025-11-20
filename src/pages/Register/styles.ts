@@ -326,3 +326,48 @@ export const ModalCloseButton = styled.button`
     background: ${({ theme }) => theme.colors.secondary};
   }
 `;
+
+
+
+
+export const AudioControls = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  align-items: center;
+`;
+
+export const AudioButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #007bff; /* Cor primária */
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+`;
+
+export const AudioPlayerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  audio {
+    flex-grow: 1;
+    width: 100%;
+    min-width: 150px; /* Garante que o player de áudio tenha um tamanho mínimo */
+  }
+`;

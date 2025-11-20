@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench, CheckCircle, XCircle } from "lucide-react";
-import { CalendarContainer, CalendarGrid, CalendarHeader, Container, CurrentMonth, Day, FormContainer, Input, InputGroup, InputWithIcon, Label, MonthNavigator, ServiceSelect, SubmitButton, TextArea, TimeSelect, TimeSlotLabel, Title, WeekDay, ModalOverlay, ModalContent, ModalIcon, ModalMessage, ModalCloseButton } from "./styles";
-import { addMonths, eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths } from "date-fns";
+import { Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench, CheckCircle, XCircle, Mic, StopCircle, PlayCircle, Trash2 } from "lucide-react";
+import { CalendarContainer, CalendarGrid, CalendarHeader, Container, CurrentMonth, Day, FormContainer, Input, InputGroup, InputWithIcon, Label, MonthNavigator, ServiceSelect, SubmitButton, TextArea, TimeSelect, TimeSlotLabel, Title, WeekDay, ModalOverlay, ModalContent, ModalIcon, ModalMessage, ModalCloseButton, AudioControls, AudioButton, AudioPlayerContainer } from "./styles";
+import { addMonths, eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths, isPast } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
@@ -20,6 +20,11 @@ interface BookedSlot {
 export  function Register() {
    const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+  const [audioURL, setAudioURL] = useState<string | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
   const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modalState, setModalState] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -31,6 +36,7 @@ export  function Register() {
     date: '',
     time: '',
     description: '',
+    audio_url: '', // Novo campo para a URL do áudio
     serviceType: '',
   });
 
@@ -61,12 +67,87 @@ export  function Register() {
     setBookedSlots(data || []);
   };
 
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      setMediaRecorder(recorder);
+      setAudioChunks([]);
+      setAudioBlob(null);
+      setAudioURL(null);
+
+      recorder.ondataavailable = (event) => {
+        setAudioChunks((prev) => [...prev, event.data]);
+      };
+
+      recorder.onstop = () => {
+        // Acessa o estado mais recente dos chunks para criar o Blob
+        setAudioChunks(currentChunks => {
+        const newAudioBlob = new Blob(currentChunks, { type: 'audio/webm' });
+        const newAudioURL = URL.createObjectURL(newAudioBlob);
+        setAudioBlob(newAudioBlob);
+        setAudioURL(newAudioURL);
+          return []; // Limpa os chunks após a parada
+        });
+      };
+
+      recorder.start();
+      setIsRecording(true);
+    } catch (err) {
+      console.error('Erro ao acessar o microfone:', err);
+      setModalState({ type: 'error', message: 'Não foi possível acessar o microfone. Verifique as permissões.' });
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const playAudio = () => {
+    if (audioURL) {
+      const audio = new Audio(audioURL);
+      audio.play();
+    }
+  };
+
+  const deleteAudio = () => {
+    if (audioURL) {
+      URL.revokeObjectURL(audioURL);
+    }
+    setAudioBlob(null);
+    setAudioURL(null);
+    setAudioChunks([]);
+    setMediaRecorder(null);
+    setIsRecording(false);
+    setFormData(prev => ({ ...prev, audio_url: '' }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setModalState(null);
-
+    let uploadedAudioUrl = '';
+    
     try {
+      // ETAPA 1: Upload do Áudio (Agora dentro do try...catch)
+      if (audioBlob) {
+        const filePath = `${Date.now()}.webm`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('booking-audios')
+          .upload(filePath, audioBlob);
+
+        if (uploadError) {
+          // Lança um erro específico para falha no upload
+          throw new Error(`Falha no upload do áudio: ${uploadError.message}`);
+        }
+
+        uploadedAudioUrl = supabase.storage.from('booking-audios').getPublicUrl(uploadData.path).data.publicUrl;
+      }
+
+      // ETAPA 2: Inserção no Banco de Dados
       const { error } = await supabase
         .from('bookings')
         .insert([
@@ -77,7 +158,8 @@ export  function Register() {
             address: formData.address,
             service_date: formData.date,
             booking_time: formData.time,
-            description: `${formData.serviceType} - ${formData.description}`,
+            description: formData.description,
+            audio_url: uploadedAudioUrl, // Salva a URL do áudio
             status: 'pending'
           },
         ]);
@@ -89,7 +171,12 @@ export  function Register() {
         navigate('/');
       }, 2000);
     } catch (error: any) {
-      setModalState({ type: 'error', message: 'Existe um serviço agendado nesse horário. Por favor, selecione outro horário ou dia e tente novamente.' });
+      console.error('Erro no handleSubmit:', error);
+      // Mensagem de erro mais detalhada
+      const errorMessage = error.message.includes("upload") 
+        ? `Erro ao enviar o áudio. Verifique suas políticas de Storage.`
+        : `Erro ao criar o agendamento. Verifique os dados e as políticas da tabela 'bookings'.`;
+      setModalState({ type: 'error', message: errorMessage });
     } finally {
       setIsSubmitting(false);
     }
@@ -102,7 +189,7 @@ export  function Register() {
 
   const handleDateSelect = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
-    setFormData(prev => ({ ...prev, date: formattedDate, time: '' }));
+    setFormData(prev => ({ ...prev, date: formattedDate, time: '', audio_url: '' })); // Limpa o áudio ao mudar a data
   };
 
   const handleCloseModal = () => {
@@ -274,6 +361,34 @@ export  function Register() {
             required
           />
         </InputGroup>
+
+        <InputGroup>
+          <Label htmlFor="audio">Gravar Áudio (Opcional)</Label>
+          <AudioControls>
+            {!isRecording && !audioURL && (
+              <AudioButton type="button" onClick={startRecording} disabled={isSubmitting}>
+                <Mic size={20} /> Gravar
+              </AudioButton>
+            )}
+            {isRecording && (
+              <AudioButton type="button" onClick={stopRecording} disabled={isSubmitting}>
+                <StopCircle size={20} /> Parar
+              </AudioButton>
+            )}
+            {audioURL && (
+              <AudioPlayerContainer>
+                <audio controls src={audioURL} />
+                <AudioButton type="button" onClick={deleteAudio} disabled={isSubmitting}>
+                  <Trash2 size={20} /> Excluir
+                </AudioButton>
+              </AudioPlayerContainer>
+            )}
+          </AudioControls>
+          {isRecording && <p>Gravando áudio...</p>}
+          {audioURL && <p>Áudio gravado. Você pode reproduzir ou excluir.</p>}
+        </InputGroup>
+
+
 
         <SubmitButton type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Agendando...' : 'Agendar Serviço'}
