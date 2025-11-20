@@ -36,7 +36,7 @@ export  function Register() {
     time: '',
     description: '',
     audio_url: '', // Novo campo para a URL do áudio
-    serviceType: '',
+    service_type: '',
   });
 
   const timeSlots = [
@@ -143,7 +143,7 @@ export  function Register() {
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
-            serviceType: formData.serviceType,
+            service_type: formData.service_type,
             address: formData.address,
             service_date: formData.date,
             booking_time: formData.time,
@@ -227,7 +227,7 @@ export  function Register() {
             <ServiceSelect
               id="serviceType"
               name="serviceType"
-              value={formData.serviceType}
+              value={formData.service_type}
               onChange={handleChange}
               required
             >
