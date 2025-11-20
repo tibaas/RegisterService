@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench, CheckCircle, XCircle, Mic, StopCircle, PlayCircle, Trash2 } from "lucide-react";
+import { Phone, User, Home, ChevronLeft, ChevronRight, Clock, Wrench, CheckCircle, XCircle, Mic, StopCircle, Trash2 } from "lucide-react";
 import { CalendarContainer, CalendarGrid, CalendarHeader, Container, CurrentMonth, Day, FormContainer, Input, InputGroup, InputWithIcon, Label, MonthNavigator, ServiceSelect, SubmitButton, TextArea, TimeSelect, TimeSlotLabel, Title, WeekDay, ModalOverlay, ModalContent, ModalIcon, ModalMessage, ModalCloseButton, AudioControls, AudioButton, AudioPlayerContainer } from "./styles";
-import { addMonths, eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths, isPast } from "date-fns";
+import { addMonths, eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
@@ -21,7 +21,6 @@ export  function Register() {
    const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -71,24 +70,20 @@ export  function Register() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const recorder = new MediaRecorder(stream);
+      const localAudioChunks: Blob[] = [];
       setMediaRecorder(recorder);
-      setAudioChunks([]);
       setAudioBlob(null);
       setAudioURL(null);
 
       recorder.ondataavailable = (event) => {
-        setAudioChunks((prev) => [...prev, event.data]);
+        localAudioChunks.push(event.data);
       };
 
       recorder.onstop = () => {
-        // Acessa o estado mais recente dos chunks para criar o Blob
-        setAudioChunks(currentChunks => {
-        const newAudioBlob = new Blob(currentChunks, { type: 'audio/webm' });
+        const newAudioBlob = new Blob(localAudioChunks, { type: 'audio/webm' });
         const newAudioURL = URL.createObjectURL(newAudioBlob);
         setAudioBlob(newAudioBlob);
         setAudioURL(newAudioURL);
-          return []; // Limpa os chunks após a parada
-        });
       };
 
       recorder.start();
@@ -106,20 +101,13 @@ export  function Register() {
     }
   };
 
-  // const playAudio = () => {
-  //   if (audioURL) {
-  //     const audio = new Audio(audioURL);
-  //     audio.play();
-  //   }
-  // };
-
   const deleteAudio = () => {
     if (audioURL) {
       URL.revokeObjectURL(audioURL);
     }
     setAudioBlob(null);
     setAudioURL(null);
-    setAudioChunks([]);
+    // audioChunks state was removed, no need to clear it.
     setMediaRecorder(null);
     setIsRecording(false);
     setFormData(prev => ({ ...prev, audio_url: '' }));
