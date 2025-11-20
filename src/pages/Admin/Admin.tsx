@@ -12,7 +12,6 @@ interface Booking {
   phone: string;
   address: string;
   service_date: string;
-  service_type: string;
   booking_time: string;
   description: string;
   status: string;
