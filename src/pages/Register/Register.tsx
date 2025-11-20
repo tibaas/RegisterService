@@ -106,12 +106,12 @@ export  function Register() {
     }
   };
 
-  const playAudio = () => {
-    if (audioURL) {
-      const audio = new Audio(audioURL);
-      audio.play();
-    }
-  };
+  // const playAudio = () => {
+  //   if (audioURL) {
+  //     const audio = new Audio(audioURL);
+  //     audio.play();
+  //   }
+  // };
 
   const deleteAudio = () => {
     if (audioURL) {
@@ -172,7 +172,6 @@ export  function Register() {
       }, 2000);
     } catch (error: any) {
       console.error('Erro no handleSubmit:', error);
-      // Mensagem de erro mais detalhada
       const errorMessage = error.message.includes("upload") 
         ? `Erro ao enviar o áudio. Verifique suas políticas de Storage.`
         : `Erro ao criar o agendamento. Verifique os dados e as políticas da tabela 'bookings'.`;
