@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { Calendar, Clock, MapPin, Phone, MessageSquare, CheckCircle, XCircle, User, Trash2 } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from './lib/supabase';
 import { ActionButtons, AudioPlayerWrapper, BookingCard, BookingDate, BookingGrid, BookingInfo, Button, Container, Description, Header, InfoItem, PageButton, Pagination, StatusBadge, Title } from './styles';
 
 
@@ -56,7 +56,7 @@ export const Admin: React.FC = () => {
       if (booking.audio_url) {
         const path = new URL(booking.audio_url).pathname.split('/booking-audios/')[1];
         if (path) {
-          const { data, error } = await supabase.storage
+          const { data } = await supabase.storage
             .from('booking-audios')
             .createSignedUrl(path, 60 * 60); // URL válida por 1 hora
 
