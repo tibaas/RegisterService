@@ -15,7 +15,7 @@ interface Booking {
   booking_time: string;
   description: string;
   status: string;
-  audio_url?: string; // Adiciona o campo opcional para a URL do áudio
+  audio_url?: string; 
   created_at: string;
 }
 
