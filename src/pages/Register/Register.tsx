@@ -136,6 +136,9 @@ export  function Register() {
       }
 
       // ETAPA 2: Inserção no Banco de Dados
+      const fullDescription = formData.serviceType
+        ? `[${formData.serviceType}] - ${formData.description}`
+        : formData.description;
       const { error } = await supabase
         .from('bookings')
         .insert([
@@ -146,7 +149,7 @@ export  function Register() {
             address: formData.address,
             service_date: formData.date,
             booking_time: formData.time,
-            description: formData.description,
+            description: fullDescription, // Salva a descrição completa
             audio_url: uploadedAudioUrl, // Salva a URL do áudio
             status: 'pending'
           },
@@ -398,5 +401,3 @@ export  function Register() {
     </Container>
   );
 }
-
-
