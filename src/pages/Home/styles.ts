@@ -9,6 +9,29 @@ export const Container = styled.div`
   padding: 2rem;
   text-align: center;
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.secondary} 100%);
+
+
+      img {
+    height: 15rem;
+    width: 25rem;
+    position: absolute;
+    margin-bottom: 32rem;
+    /* background: black; */
+    
+  }
+
+  @media (max-width: 450px) {
+
+      img {
+    height: 13rem;
+    width: 23rem;
+    position: absolute;
+    /* margin-bottom: 21rem; */
+    /* background: black; */
+    
+  }
+
+  }
 `;
 
 export const Content = styled.div`
@@ -24,27 +47,7 @@ export const Content = styled.div`
   justify-content: center;
   flex-direction: column;
 
-    img {
-    height: 13rem;
-    width: 23rem;
-    position: absolute;
-    margin-bottom: 15rem;
-    /* background: black; */
-    
-  }
 
-  @media (max-width: 450px) {
-
-      img {
-    height: 13rem;
-    width: 23rem;
-    position: absolute;
-    margin-bottom: 21rem;
-    /* background: black; */
-    
-  }
-
-  }
 `;
 
 export const Title = styled.h1`

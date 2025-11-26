@@ -8,8 +8,8 @@ export function Home() {
 
   return (
     <Container>
-      <Content>
         <img src={logo} />
+      <Content>
         <IconContainer>
           {/* <Snowflake size={48} />
           <Wind size={48} /> */}
