@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { Container, Content, Description, IconContainer, RegisterButton, Title } from "./styles"
-import { Wind, CalendarArrowUp, Snowflake } from "lucide-react"
+import { CalendarArrowUp} from "lucide-react"
 import  logo  from "../../assets/logo.png" 
 
 export function Home() {
