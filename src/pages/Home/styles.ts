@@ -39,7 +39,7 @@ export const Content = styled.div`
     height: 13rem;
     width: 23rem;
     position: absolute;
-    margin-bottom: 20rem;
+    margin-bottom: 21rem;
     /* background: black; */
     
   }
