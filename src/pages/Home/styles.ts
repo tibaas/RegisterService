@@ -13,8 +13,9 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   max-width: 800px;
-  background: ${({ theme }) => theme.colors.white};
-  padding: 3rem;
+  /* background: ${({ theme }) => theme.colors.white}; */
+  background: #f2f2f2 ;
+  padding: 2rem;
   border-radius: 20px;
   box-shadow: ${({ theme }) => theme.shadows.lg};
 
@@ -22,10 +23,32 @@ export const Content = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
+    img {
+    height: 13rem;
+    width: 23rem;
+    position: absolute;
+    margin-bottom: 15rem;
+    /* background: black; */
+    
+  }
+
+  @media (max-width: 450px) {
+
+      img {
+    height: 13rem;
+    width: 23rem;
+    position: absolute;
+    margin-bottom: 20rem;
+    /* background: black; */
+    
+  }
+
+  }
 `;
 
 export const Title = styled.h1`
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 1rem;
 `;
@@ -59,4 +82,6 @@ export const IconContainer = styled.div`
   gap: 2rem;
   margin-bottom: 2rem;
   color: ${({ theme }) => theme.colors.primary};
+
+
 `;
